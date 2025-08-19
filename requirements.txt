@@ -1,0 +1,7 @@
+streamlit
+sentence-transformers
+faiss-cpu
+PyPDF2
+langchain
+openai>=1.0.0
+python-dotenv
