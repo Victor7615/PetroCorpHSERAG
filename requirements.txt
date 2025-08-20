@@ -1,7 +1,6 @@
 streamlit
-sentence-transformers
+openai>=1.0.0
 faiss-cpu
 PyPDF2
 langchain
-openai>=1.0.0
 python-dotenv
