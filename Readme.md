@@ -133,7 +133,7 @@ Ensure your project has the following files at the root level:
 3.  Configure the settings:
       * **Name**: A unique name for your app (e.g., `hse-assist`).
       * **Build Command**: `pip install -r requirements.txt`
-      * **Start Command**: `bash startup.sh`
+      
 
 ### Step 3: Add Environment Variables
 
