@@ -79,7 +79,7 @@ def setup_rag_pipeline(pdf_path):
 st.title("Global PetroCorp Compliance Assistant ⚖️")
 st.markdown("This assistant provides answers grounded in official corporate policy documents.")
 
-PDF_FILE_PATH = "C:\\Users\\USER\\Downloads\\OpenSourceRAG\\PetroSafe Global Holdings.pdf"
+PDF_FILE_PATH = "PetroSafe Global Holdings.pdf"
 
 if not os.path.exists(PDF_FILE_PATH):
     st.error(f"Required knowledge base file is missing: {PDF_FILE_PATH}")
