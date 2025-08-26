@@ -1,4 +1,3 @@
-
 -----
 
 # HSE Compliance RAG Assistant ⚖️
@@ -11,23 +10,23 @@ The application is built with Python and Streamlit, powered by the **OpenAI API*
 
 ## 🏛️ Architecture Overview
 
-The application follows a modern RAG pattern:
+The application follows a modern RAG pattern with an efficient pre-computation step:
 
 1.  **Frontend**: A user-friendly chat interface built with **Streamlit**.
 2.  **Backend Logic**: The Streamlit app orchestrates the RAG process.
 3.  **AI Services & Search**:
       * **OpenAI API**: Provides both the embedding model (`text-embedding-3-small`) to convert text to vectors and the chat model (`gpt-4o`) for generating answers.
-      * **FAISS (in-memory)**: Stores the indexed policy document and performs rapid vector searches locally within the application.
+      * **FAISS (pre-built)**: The policy document is indexed into a FAISS vector store **once**, locally. This pre-built index is included in the deployment for instant load times.
 4.  **Deployment**: The final application is hosted as a Web Service on **Render**.
 
 -----
 
-##  Features
+## ✨ Features
 
   * **Grounded Answers**: Responses are based solely on the provided HSE policy document, ensuring accuracy.
   * **Intuitive Chat Interface**: A simple, interactive UI for asking compliance questions.
   * **Secure Configuration**: All API keys are managed securely using environment variables.
-  * **Scalable Deployment**: Hosted on Render for reliable, continuous access.
+  * **Efficient Startups**: Uses a pre-built index to ensure the deployed application launches quickly without re-processing data.
   * **Built-in Safety**: The assistant includes guardrails to prevent it from giving unauthorized advice and directs users to supervisors for complex issues.
 
 -----
@@ -43,9 +42,9 @@ The application follows a modern RAG pattern:
 
 -----
 
-##  Part 1: Setting Up the OpenAI Backend
+## 🚀 Part 1: Setting Up the OpenAI Backend
 
-This is the foundation of the project. The setup is simpler than the full Azure version, as you only need to generate a single API key.
+This is the foundation of the project. The setup is simpler than a full Azure version, as you only need to generate a single API key.
 
 **Prerequisites:** An active OpenAI account with billing set up.
 
@@ -59,7 +58,7 @@ This is the foundation of the project. The setup is simpler than the full Azure 
 
 -----
 
-##  Part 2: Running the Streamlit App Locally
+## 💻 Part 2: Running the Streamlit App Locally
 
 Now that you have your API key, you can run the Streamlit application on your local machine.
 
@@ -101,7 +100,19 @@ OPENAI_EMBEDDING_MODEL="text-embedding-3-small"
 OPENAI_CHAT_MODEL="gpt-4o"
 ```
 
-### Step 5: Run the Application
+### Step 5: Pre-build the Vector Index
+
+Run the `index.py` script **once** to process your PDF and create the necessary index files. This step uses the OpenAI API, so ensure your `.env` file is configured correctly.
+
+```bash
+python index.py
+```
+
+This will create two new files in your directory: `index.faiss` and `documents.pkl`.
+
+### Step 6: Run the Application
+
+Now, run the main Streamlit application. It will load the pre-built index instantly.
 
 ```bash
 streamlit run Rag_app.py
@@ -111,20 +122,19 @@ Your application should now be running in a new browser tab\!
 
 -----
 
-##  Part 3: Deploying to Render
+## 🌐 Part 3: Deploying to Render
 
 The final step is to deploy your application to make it publicly accessible.
 
 ### Step 1: Prepare Your Repository
 
-Ensure your project has the following files at the root level:
+Ensure your project has the following files at the root level before you push to GitHub:
 
   * `Rag_app.py` (your application code)
   * `requirements.txt` (your dependencies)
   * `.gitignore` (to exclude `.env`, `__pycache__/`, etc.)
- 
-
-
+  * `index.faiss` (the pre-built index)
+  * `documents.pkl` (the pre-built document chunks)
 
 ### Step 2: Create a New Web Service on Render
 
@@ -133,7 +143,6 @@ Ensure your project has the following files at the root level:
 3.  Configure the settings:
       * **Name**: A unique name for your app (e.g., `hse-assist`).
       * **Build Command**: `pip install -r requirements.txt`
-      
 
 ### Step 3: Add Environment Variables
 
@@ -156,8 +165,11 @@ Click **Create Web Service**. Render will build and deploy your application. Onc
 ├── .streamlit/
 │   └── config.toml
 ├── .gitignore
-├── Rag_app.py
 ├── HSE_Policy.pdf
+├── Rag_app.py
+├── index.py
+├── index.faiss
+├── documents.pkl
 ├── requirements.txt
 └── README.md
 ```
