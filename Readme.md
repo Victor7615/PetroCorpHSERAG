@@ -104,7 +104,7 @@ OPENAI_CHAT_MODEL="gpt-4o"
 ### Step 5: Run the Application
 
 ```bash
-streamlit run app.py
+streamlit run Rag_app.py
 ```
 
 Your application should now be running in a new browser tab\!
@@ -119,7 +119,7 @@ The final step is to deploy your application to make it publicly accessible.
 
 Ensure your project has the following files at the root level:
 
-  * `app.py` (your application code)
+  * `Rag_app.py` (your application code)
   * `requirements.txt` (your dependencies)
   * `.gitignore` (to exclude `.env`, `__pycache__/`, etc.)
  
